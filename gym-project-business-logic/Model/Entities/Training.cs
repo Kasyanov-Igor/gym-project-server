@@ -1,6 +1,7 @@
 ﻿namespace gym_project_business_logic.Model
 {
-    public class Gym
+    public class Training
     {
+        public int Id { get; set; }
     }
 }
