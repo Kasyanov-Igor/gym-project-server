@@ -1,24 +1,28 @@
 services:
   gym-web-project:
     build: .
+    env_file:
+      - .env
     ports:
-      - "5000:8080"
+      - ${APPLICATION_PORT}:${CONTAINER_PORT}
     depends_on:
       - posgres
     environment:
       DB_HOST: db
-      DB_NAME: app_db
-      DB_USER: user
-      DB_PASS: password
+      DB_NAME: ${DATABASE_SERVER_NAME}
+      DB_USER: ${USER_NAME}
+      DB_PASS: ${USER_PASSWORD}
 
   posgres:
-    image: postgres:16.8-alpine3.20
+    image: postgres:${POSGRESQL_VERSION}
+    env_file:
+      - .env
     volumes:
       - pgdata:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: app_db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${DATABASE_SERVER_NAME}
+      POSTGRES_USER: ${USER_NAME}
+      POSTGRES_PASSWORD: ${USER_PASSWORD}
 
 volumes:
   pgdata:
