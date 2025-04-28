@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace gym_project_business_logic.Services.Interface
 {
-    internal class IGymService
+    public class IGymService
     {
     }
 }

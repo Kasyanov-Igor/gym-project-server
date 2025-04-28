@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using gym_project_business_logic.Model;
 
 namespace gym_project_business_logic.Services.Interface
 {
-    internal class ICoachService
+    public interface ICoachService
     {
+        public Coach? GetCoach(string login);
+
+        public bool Registration(Coach user);
+
+        public bool FindCoach(Coach user);
     }
 }
