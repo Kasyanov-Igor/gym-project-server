@@ -5,7 +5,7 @@ namespace gym_project_business_logic.Services
 {
 	public class SqliteConnection : ADatabaseConnection
 	{
-		public const string _DATABASE_NAME = "../Gym-DB.db";
+		public const string _DATABASE_NAME = "./Gym-DB.db";
 
 		protected override string ReturnConnectionString()
 		{

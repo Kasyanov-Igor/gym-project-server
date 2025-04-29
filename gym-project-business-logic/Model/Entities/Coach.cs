@@ -6,7 +6,6 @@ namespace gym_project_business_logic.Model
 {
 	public class Coach
 	{
-		[Key]
 		public int Id { get; set; }
 
 		public string FullName { get; set; } = null!;

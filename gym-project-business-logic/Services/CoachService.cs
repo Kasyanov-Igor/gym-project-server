@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using gym_project_business_logic.Model;
 using gym_project_business_logic.Services.Interface;
 
@@ -30,12 +29,11 @@ namespace gym_project_business_logic.Services
 
 		public bool FindCoach(Coach coach)
 		{
-			//if (this._connection.Coachs.Any(usr =>
-			//usr.Login == coach.Login &&
-			//usr.Password == coach.Password))
-			//{
-			//	return true;
-			//}
+			if (this._connection.Coachs.Any(usr =>
+			usr.Login == coach.Login))
+			{
+				return true;
+			}
 
 			return false;
 		}
@@ -44,5 +42,24 @@ namespace gym_project_business_logic.Services
 		{
 			return this._connection.Coachs.Where(u => u.Login == login).FirstOrDefault();
 		}
-	}
+
+        public bool DeleteCoach(string LoginCoach)
+        {
+
+                Coach coach = this.GetCoach(LoginCoach);
+
+                if (coach != null)
+                {
+                    if (this.FindCoach(coach))
+                    {
+                        this._connection.Coachs.Remove(coach);
+                        this._connection.SaveChanges();
+
+                        return true;
+                    }
+                }
+           
+            return false;
+        }
+    }
 }

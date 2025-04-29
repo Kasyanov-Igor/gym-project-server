@@ -2,8 +2,8 @@
 {
     public enum TrainerSpecializationEnum
     {
-        PersonalTraining,
-        Dancing,
-        Yoga
+        PersonalTraining = 0,
+        Dancing = 1,
+        Yoga = 2
     }
 }

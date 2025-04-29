@@ -20,7 +20,7 @@ namespace gym_project.Controllers
 		}
 
 		[HttpPost("Register")]
-		public void RegisterController([FromBody] Coach model)
+		public void RegisterController(Coach model)
 		{
 			if (ModelState.IsValid)
 			{

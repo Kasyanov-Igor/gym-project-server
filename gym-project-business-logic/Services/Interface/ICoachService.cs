@@ -9,5 +9,7 @@ namespace gym_project_business_logic.Services.Interface
         public bool Registration(Coach user);
 
         public bool FindCoach(Coach user);
+
+        public bool DeleteCoach(string LoginCoach);
     }
 }
