@@ -16,7 +16,7 @@ namespace gym_project_business_logic.Model
 
         public string Gender { get; set; } = null!;
 
-        public AdminStatus status { get; set; }
+        public AdminStatus? status { get; set; } = null!;
 
         public string Login { get; set; } = null!;
 
