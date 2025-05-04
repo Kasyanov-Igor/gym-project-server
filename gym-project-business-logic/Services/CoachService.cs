@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using gym_project_business_logic.Model;
 using gym_project_business_logic.Services.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace gym_project_business_logic.Services
 {
@@ -13,21 +15,21 @@ namespace gym_project_business_logic.Services
 			this._connection = databaseConnection;
 		}
 
-		public bool Registration(Coach coach)
+		public async Task AddCoach(Coach coach)
 		{
 			if (!this.FindCoach(coach))
 			{
-
-				this._connection.Coachs.Add(coach);
-				this._connection.SaveChanges();
-
-				return true;
+				await this._connection.Coachs.AddAsync(coach);
+                await this._connection.SaveChangesAsync();
 			}
-
-			return false;
 		}
 
-		public bool FindCoach(Coach coach)
+        public async Task<bool> GetEmail(string emailAddress)
+        {
+            return !await _connection.Coachs.AnyAsync(u => u.Email == emailAddress);
+        }
+
+        public bool FindCoach(Coach coach)
 		{
 			if (this._connection.Coachs.Any(usr =>
 			usr.Login == coach.Login))
@@ -46,7 +48,7 @@ namespace gym_project_business_logic.Services
         public bool DeleteCoach(string LoginCoach)
         {
 
-                Coach coach = this.GetCoach(LoginCoach);
+                Coach? coach = this.GetCoach(LoginCoach);
 
                 if (coach != null)
                 {

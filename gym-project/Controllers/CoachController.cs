@@ -26,35 +26,39 @@ namespace gym_project.Controllers
 		}
 
 		[HttpPost("register")]
-		public void RegisterController([FromBody] DTOCoach modelDTO)
+		public async Task<IActionResult> RegisterController([FromBody] DTOCoach modelDTO)
 		{
-			Coach coach = this._mapper.Map<Coach>(modelDTO);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-			//string salt = PasswordHelper.GenerateSalt();
-			//string hashedPassword = PasswordHelper.HashPassword(coach.Password, salt);
 
+            Coach coach = this._mapper.Map<Coach>(modelDTO);
 
-			//if (ModelState.IsValid)
-			//{
-			//	Coach coach = new Coach
-			//	{
-			//		FullName = model.FullName,
-			//		DateOfBirth = model.DateOfBirth,
-			//		Email = model.Email,
-			//		PhoneNumber = model.PhoneNumber,
-			//		Gender = model.Gender,
-			//		Specialization = model.Specialization,
-			//		Status = model.Status,
-			//		Login = model.Login,
-			//		Password = model.Password,
-			//		WorkingTime = model.WorkingTime
-			//	};
+			string salt = PasswordHelper.GenerateSalt();
+			string hashedPassword = PasswordHelper.HashPassword(coach.Password, salt);
 
-			//	if (coach.Password != null && coach.Password != null && coach.FullName != null)
-			//	{
-			//		this._coachService.Registration(coach);
-			//	}
-		}
+            if (!await this._coachService.GetEmail(modelDTO.Email))
+            {
+                ModelState.AddModelError("Email Address", "Этот адрес электронной почты уже зарегистрирован.");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await this._coachService.AddCoach(coach);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Ошибка при сохранении пользователя: {ex}");
+                return StatusCode(500, "Произошла ошибка при регистрации пользователя.");
+            }
+            
+
+            return Ok(new { Message = "Пользователь успешно зарегистрирован." });
+
+        }
 	}
 
 }
