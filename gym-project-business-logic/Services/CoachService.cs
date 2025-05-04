@@ -20,16 +20,16 @@ namespace gym_project_business_logic.Services
 			if (!this.FindCoach(coach))
 			{
 				await this._connection.Coachs.AddAsync(coach);
-                await this._connection.SaveChangesAsync();
+				await this._connection.SaveChangesAsync();
 			}
 		}
 
-        public async Task<bool> GetEmail(string emailAddress)
-        {
-            return !await _connection.Coachs.AnyAsync(u => u.Email == emailAddress);
-        }
+		public async Task<bool> GetEmail(string emailAddress)
+		{
+			return !await _connection.Coachs.AnyAsync(u => u.Email == emailAddress);
+		}
 
-        public bool FindCoach(Coach coach)
+		public bool FindCoach(Coach coach)
 		{
 			if (this._connection.Coachs.Any(usr =>
 			usr.Login == coach.Login))
@@ -45,23 +45,23 @@ namespace gym_project_business_logic.Services
 			return this._connection.Coachs.Where(u => u.Login == login).FirstOrDefault();
 		}
 
-        public bool DeleteCoach(string LoginCoach)
-        {
+		public bool DeleteCoach(string LoginCoach)
+		{
 
-                Coach? coach = this.GetCoach(LoginCoach);
+			Coach? coach = this.GetCoach(LoginCoach);
 
-                if (coach != null)
-                {
-                    if (this.FindCoach(coach))
-                    {
-                        this._connection.Coachs.Remove(coach);
-                        this._connection.SaveChanges();
+			if (coach != null)
+			{
+				if (this.FindCoach(coach))
+				{
+					this._connection.Coachs.Remove(coach);
+					this._connection.SaveChanges();
 
-                        return true;
-                    }
-                }
-           
-            return false;
-        }
-    }
+					return true;
+				}
+			}
+
+			return false;
+		}
+	}
 }
