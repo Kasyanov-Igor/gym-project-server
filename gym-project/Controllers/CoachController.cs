@@ -13,52 +13,52 @@ namespace gym_project.Controllers
 	{
 		private ICoachService _coachService;
 
-		private ADatabaseConnection _connection;
+		private MapperConfig _config;
 
-		private IMapper _mapper;
-
-		public CoachController(IMapper mapper)
+		public CoachController(ICoachService coachService, MapperConfig mapper)
 		{
-			this._connection = new SqliteConnection();
-			this._coachService = new CoachService(this._connection);
-			this._mapper = mapper;
-
+			this._coachService = coachService;
+			this._config = mapper;
 		}
 
 		[HttpPost("register")]
 		public async Task<IActionResult> RegisterController([FromBody] DTOCoach modelDTO)
 		{
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
 
 
-            Coach coach = this._mapper.Map<Coach>(modelDTO);
+			Coach coach = this._config.CreateMapper().Map<Coach>(modelDTO);
+
 
 			string salt = PasswordHelper.GenerateSalt();
 			string hashedPassword = PasswordHelper.HashPassword(coach.Password, salt);
 
-            if (!await this._coachService.GetEmail(modelDTO.Email))
-            {
-                ModelState.AddModelError("Email Address", "Этот адрес электронной почты уже зарегистрирован.");
-                return BadRequest(ModelState);
-            }
+			coach.Password = hashedPassword;
+			coach.Salt = salt;
 
-            try
-            {
-                await this._coachService.AddCoach(coach);
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine($"Ошибка при сохранении пользователя: {ex}");
-                return StatusCode(500, "Произошла ошибка при регистрации пользователя.");
-            }
-            
+			if (!await this._coachService.GetEmail(modelDTO.Email))
+			{
+				ModelState.AddModelError("Email Address", "Этот адрес электронной почты уже зарегистрирован.");
+				return BadRequest(ModelState);
+			}
 
-            return Ok(new { Message = "Пользователь успешно зарегистрирован." });
+			try
+			{
+				await this._coachService.AddCoach(coach);
+			}
+			catch (Exception ex)
+			{
+				Console.Error.WriteLine($"Ошибка при сохранении пользователя: {ex}");
+				return StatusCode(500, "Произошла ошибка при регистрации пользователя.");
+			}
 
-        }
+
+			return Ok(new { Message = "Пользователь успешно зарегистрирован." });
+
+		}
 	}
 
 }
