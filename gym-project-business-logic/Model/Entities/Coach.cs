@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using gym_project_business_logic.Model.Enum;
 
 namespace gym_project_business_logic.Model
@@ -28,5 +27,6 @@ namespace gym_project_business_logic.Model
 
 		public string? WorkingTime { get; set; }
 
+		public string Salt { get; set; } = null!;
 	}
 }
