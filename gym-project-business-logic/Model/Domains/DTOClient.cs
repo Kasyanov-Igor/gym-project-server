@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace gym_project_business_logic.Model
+namespace gym_project_business_logic.Model.Domains
 {
-	public class Client
+	public class DTOClient
 	{
-		public int Id { get; set; }
-
 		public string Name { get; set; } = null!;
 
 		public DateTime DateOfBirth { get; set; }
@@ -16,12 +16,8 @@ namespace gym_project_business_logic.Model
 
 		public string Gender { get; set; } = null!;
 
-		public string Status { get; set; } = null!;
-
 		public string Login { get; set; } = null!;
 
 		public string Password { get; set; } = null!;
-
-		public string Salt { get; set; } = null!;
 	}
 }
