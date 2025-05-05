@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using gym_project_business_logic.Model;
 
 namespace gym_project_business_logic.Services.Interface
 {
-    internal class IClientService
-    {
-    }
+	public interface IClientService
+	{
+		public bool FindClient(Client coach);
+
+		public Task AddClient(Client user);
+
+		public Task<Client?> GetClient(string login, string password);
+
+		public Task<bool> GetEmail(string emailAddress);
+	}
 }
