@@ -15,7 +15,7 @@ builder.Services.AddScoped<ADatabaseConnection, SqliteConnection>();
 builder.Services.AddScoped<ICoachService, CoachService>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<MapperConfig, MapperConfig>();
-//builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 
 var app = builder.Build();
