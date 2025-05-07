@@ -40,15 +40,21 @@ namespace gym_project_business_logic.Services
 			return false;
 		}
 
-		public Coach? GetCoach(string login)
+		public async Task<Coach?> GetCoach(string login, string password)
 		{
-			return this._connection.Coachs.Where(u => u.Login == login).FirstOrDefault();
+			Coach user = await this._connection.Coachs.FirstOrDefaultAsync(u => u.Login == login);
+			if (user == null)
+			{ return null; }
+
+			string hashedPassword = PasswordHelper.HashPassword(password, user.Salt);
+
+			return await this._connection.Coachs.FirstOrDefaultAsync(u => u.Login == login && u.Password == hashedPassword);
 		}
 
-		public bool DeleteCoach(string LoginCoach)
+		public bool DeleteCoach(string login, string password)
 		{
 
-			Coach? coach = this.GetCoach(LoginCoach);
+			Coach? coach = this.GetCoach(login, password).Result;
 
 			if (coach != null)
 			{
