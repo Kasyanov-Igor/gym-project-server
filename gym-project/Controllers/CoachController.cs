@@ -1,4 +1,4 @@
-using AutoMapper;
+using System.Security.Claims;
 using gym_project_business_logic.Model;
 using gym_project_business_logic.Model.Domains;
 using gym_project_business_logic.Services;
@@ -11,14 +11,20 @@ namespace gym_project.Controllers
 	[Route("[controller]")]
 	public class CoachController : ControllerBase
 	{
-		private ICoachService _coachService;
-
 		private MapperConfig _config;
+		private ICoachService _coachService;
+		private ITokenService _tokenService;
+		private ILogger<CoachController> _logger;
+		private IWebHostEnvironment _environment;
 
-		public CoachController(ICoachService coachService, MapperConfig mapper)
+		public CoachController(ICoachService coachService, MapperConfig mapper, ILogger<CoachController> logger, IWebHostEnvironment environment,
+					ITokenService tokenService)
 		{
-			this._coachService = coachService;
-			this._config = mapper;
+			this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
+			this._config = mapper ?? throw new ArgumentNullException(nameof(mapper));
+			this._environment = environment ?? throw new ArgumentNullException(nameof(environment));
+			this._tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
+			this._coachService = coachService ?? throw new ArgumentNullException(nameof(coachService));
 		}
 
 		[HttpPost("register")]
@@ -58,6 +64,52 @@ namespace gym_project.Controllers
 
 			return Ok(new { Message = "Пользователь успешно зарегистрирован." });
 
+		}
+
+		[HttpPost("login")]
+		public async Task<IActionResult> Login([FromBody] DTOCoachLogin modelDTO)
+		{
+			if (!ModelState.IsValid)
+			{
+				return ValidationProblem();
+			}
+
+			Coach? user = await this._coachService.GetCoach(modelDTO.Login, modelDTO.Password);
+
+			if (user == null)
+			{
+				this._logger.LogWarning("Неудачная попытка входа: неверный логин или пароль.");
+
+				return Unauthorized(new ProblemDetails
+				{
+					Title = "Неверные учетные данные",
+					Detail = "Логин или пароль указаны неверно",
+					Status = StatusCodes.Status401Unauthorized
+				});
+			}
+
+			var claims = new List<Claim>
+			{
+				new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+				new Claim(ClaimTypes.Name, user.Login),
+				new Claim(ClaimTypes.Role, user.Status.ToString())
+			};
+
+			var cookieOptions = new CookieOptions
+			{
+				HttpOnly = true,
+				Secure = _environment.IsProduction(),
+				SameSite = SameSiteMode.Lax,
+				Expires = DateTimeOffset.UtcNow.AddMinutes(30)
+			};
+
+			var token = this._tokenService.GenerateToken(claims);
+
+			Response.Cookies.Append("authToken", token, cookieOptions);
+
+			var userDto = this._config.CreateMapper().Map<Coach>(user);
+
+			return Ok(userDto);
 		}
 	}
 

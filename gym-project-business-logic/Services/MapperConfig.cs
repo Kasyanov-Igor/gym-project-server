@@ -10,6 +10,7 @@ namespace gym_project_business_logic.Services
 		public MapperConfig()
 		{
 			CreateMap<DTOCoach, Coach>();
+            CreateMap<DTOCoachLogin, Coach>();
             CreateMap<DTOClient, Client>()
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => "Client"));
         }
