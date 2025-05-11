@@ -67,7 +67,7 @@ namespace gym_project.Controllers
 		}
 
 		[HttpPost("login")]
-		public async Task<IActionResult> Login([FromBody] DTOCoachLogin modelDTO)
+		public async Task<IActionResult> Login([FromBody] DTOLogin modelDTO)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -107,9 +107,9 @@ namespace gym_project.Controllers
 
 			Response.Cookies.Append("authToken", token, cookieOptions);
 
-			var userDto = this._config.CreateMapper().Map<Coach>(user);
+			//var userDto = this._config.CreateMapper().Map<Coach>(user);
 
-			return Ok(userDto);
+			return Ok(user);
 		}
 	}
 
