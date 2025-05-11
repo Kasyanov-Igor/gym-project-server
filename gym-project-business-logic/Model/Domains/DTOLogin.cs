@@ -1,6 +1,6 @@
 ﻿namespace gym_project_business_logic.Model.Domains
 {
-	public class DTOCoachLogin
+	public class DTOLogin
 	{
 		public string Login { get; set; } = null!;
 
