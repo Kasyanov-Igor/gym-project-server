@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using gym_project_business_logic.Model;
 using gym_project_business_logic.Services.Interface;
@@ -49,5 +50,57 @@ namespace gym_project_business_logic.Services
 
 			return false;
 		}
+
+		public async Task UpdateClient(string login, string password, string? name = null, DateTime? dateOfBirth = null, string? contactPhoneNumber = null,
+							string? emailAddress = null, string? gender = null, string? status = null, string? salt = null)
+		{
+			Client? client = await GetClient(login, password);
+
+			if (client != null)
+			{
+				if (name != null)
+				{
+					client.Name = name;
+				}
+				if (dateOfBirth != null)
+				{
+					client.DateOfBirth = dateOfBirth.Value;
+				}
+
+				if (contactPhoneNumber != null)
+				{
+					client.ContactPhoneNumber = contactPhoneNumber;
+				}
+				if (emailAddress != null)
+				{
+					client.EmailAddress = emailAddress;
+				}
+				if (gender != null)
+				{
+					client.Gender = gender;
+				}
+				if (status != null)
+				{
+					client.Status = status;
+				}
+				if (salt != null)
+				{
+					client.Salt = salt;
+				}
+				await this.DeleteClientAsync(login, password);
+				await this.AddClient(client);
+			}
+		}
+
+		public async Task DeleteClientAsync(string login, string password)
+		{
+			Client? client = await GetClient(login, password);
+			if (client != null)
+			{
+				this._connection.Clients.Remove(client);
+				await this._connection.SaveChangesAsync();
+			}
+		}
+
 	}
 }
