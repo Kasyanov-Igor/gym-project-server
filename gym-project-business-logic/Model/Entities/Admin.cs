@@ -6,6 +6,7 @@ namespace gym_project_business_logic.Model
     public class Admin
     {
         public int Id { get; set; }
+
         public string FullName { get; set; } = null!;
 
         public DateTime DateOfBirth { get; set; }
@@ -16,10 +17,12 @@ namespace gym_project_business_logic.Model
 
         public string Gender { get; set; } = null!;
 
-        public AdminStatus? status { get; set; } = null!;
+        public AdminStatus? Status { get; set; } = null!;
 
         public string Login { get; set; } = null!;
 
         public string Password { get; set; } = null!;
+
+        public string Salt { get; set; } = null!;
     }
 }
