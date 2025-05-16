@@ -1,5 +1,4 @@
-﻿using System.Data;
-using AutoMapper;
+﻿using AutoMapper;
 using gym_project_business_logic.Model;
 using gym_project_business_logic.Model.Domains;
 
