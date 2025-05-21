@@ -28,7 +28,7 @@ namespace gym_project.Controllers
 		}
 
 		[HttpPost("register")]
-		public async Task<IActionResult> RegisterController([FromBody] DTOCoach modelDTO)
+		public async Task<IActionResult> RegisterController([FromForm] DTOCoach modelDTO)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -67,7 +67,7 @@ namespace gym_project.Controllers
 		}
 
 		[HttpPost("login")]
-		public async Task<IActionResult> Login([FromBody] DTOLogin modelDTO)
+		public async Task<IActionResult> Login([FromForm] DTOLogin modelDTO)
 		{
 			if (!ModelState.IsValid)
 			{
