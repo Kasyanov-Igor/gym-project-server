@@ -111,7 +111,13 @@ namespace gym_project.Controllers
 
 			return Ok(user);
 		}
-	}
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Coach>> GetCoach(int id)
+        {
+            return await this._coachService.GetCoachId(id);
+        }
+    }
 
 }
 
