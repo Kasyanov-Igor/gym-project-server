@@ -3,6 +3,7 @@ using gym_project_business_logic.Model.Domains;
 using gym_project_business_logic.Services;
 using gym_project_business_logic.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace gym_project.Controllers
@@ -96,5 +97,5 @@ namespace gym_project.Controllers
 			///Client userReadDto = this._mapper.CreateMapper().Map<Client>(user);
 			return Ok(user);
 		}
-	}
+    }
 }
