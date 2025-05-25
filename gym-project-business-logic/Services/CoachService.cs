@@ -51,7 +51,12 @@ namespace gym_project_business_logic.Services
 			return await this._connection.Coachs.FirstOrDefaultAsync(u => u.Login == login && u.Password == hashedPassword);
 		}
 
-		public bool DeleteCoach(string login, string password)
+        public async Task<Coach?> GetCoachId(int id)
+        {
+            return await this._connection.Coachs.FirstOrDefaultAsync(u => u.Id == id);
+        }
+
+        public bool DeleteCoach(string login, string password)
 		{
 
 			Coach? coach = this.GetCoach(login, password).Result;

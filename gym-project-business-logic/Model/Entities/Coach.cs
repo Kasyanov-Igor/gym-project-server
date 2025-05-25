@@ -1,4 +1,6 @@
 ﻿using System;
+using gym_project_business_logic.Model.Domains;
+using System.Collections.Generic;
 using gym_project_business_logic.Model.Enum;
 
 namespace gym_project_business_logic.Model
@@ -20,6 +22,8 @@ namespace gym_project_business_logic.Model
 		public TrainerSpecializationEnum Specialization { get; set; }
 
 		public TrainerStatusEnum Status { get; set; }
+
+		public ICollection<Workout>? Workouts { get; set; }
 
 		public string Login { get; set; } = null!;
 

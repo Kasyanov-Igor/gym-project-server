@@ -1,4 +1,5 @@
 ﻿using gym_project_business_logic.Model;
+using gym_project_business_logic.Model.Domains;
 using Microsoft.EntityFrameworkCore;
 
 namespace gym_project_business_logic.Services.Interface
@@ -11,7 +12,8 @@ namespace gym_project_business_logic.Services.Interface
 		public DbSet<Client> Clients => Set<Client>();
 		public DbSet<Admin> Admins => Set<Admin>();
 		public DbSet<Coach> Coachs => Set<Coach>();
-		public DbSet<Gym> Gyms => Set<Gym>();
+        public DbSet<Workout> Workouts => Set<Workout>();
+        public DbSet<Gym> Gyms => Set<Gym>();
 		public DbSet<Training> Trainings => Set<Training>();
 
 		public ADatabaseConnection()
