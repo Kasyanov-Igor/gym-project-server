@@ -14,5 +14,8 @@ namespace gym_project_business_logic.Services.Interface
 		public bool FindCoach(Coach user);
 
 		public bool DeleteCoach(string LoginCoach, string password);
-	}
+
+		public Task<Coach?> GetCoachId(int id);
+
+    }
 }
