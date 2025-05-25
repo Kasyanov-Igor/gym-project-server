@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using gym_project_business_logic.Services.Interface;
 using gym_project_business_logic.Model.Domains;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace gym_project_business_logic.Services
 {
@@ -14,6 +16,11 @@ namespace gym_project_business_logic.Services
         {
             await this._connection.Gyms.AddAsync(gym);
             await this._connection.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Gym>> GetGyms()
+        {
+          return await this._connection.Gyms.ToListAsync();
         }
     }
 }
