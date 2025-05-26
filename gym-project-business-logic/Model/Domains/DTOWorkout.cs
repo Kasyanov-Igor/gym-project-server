@@ -8,7 +8,7 @@ namespace gym_project_business_logic.Model.Domains
 
         public string NameCoach { get; set; } = null!; // Имя тренера
 
-        public Gym Gym { get; set; } = null!;
+        public int GymId { get; set; }
 
         public string? Description { get; set; } // Описание тренировки
 

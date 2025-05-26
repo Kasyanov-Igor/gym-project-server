@@ -8,7 +8,5 @@ namespace gym_project_business_logic.Model
 		public int Id { get; set; }
 
 		public string Name { get; set; } = string.Empty!;
-
-		public ICollection<Workout>? Workouts { get; set; }
 	}
 }

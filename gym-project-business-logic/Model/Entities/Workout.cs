@@ -1,5 +1,4 @@
 ﻿using System;
-using gym_project_business_logic.Model;
 
 namespace Model.Entities
 {
@@ -11,7 +10,7 @@ namespace Model.Entities
 
         public string NameCoach { get; set; } = null!; // Имя тренера
 
-        public Gym Gym { get; set; } = null!;
+        public int GymId { get; set; }
 
         public string? Description { get; set; } // Описание тренировки
 
