@@ -1,10 +1,10 @@
 ﻿using gym_project_business_logic.Model;
-using gym_project_business_logic.Model.Domains;
 using Microsoft.EntityFrameworkCore;
+using Model.Entities;
 
 namespace gym_project_business_logic.Services.Interface
 {
-	public abstract class ADatabaseConnection : DbContext
+    public abstract class ADatabaseConnection : DbContext
 	{
 		protected abstract string ReturnConnectionString();
 		protected string ConnectionString { get; private set; }

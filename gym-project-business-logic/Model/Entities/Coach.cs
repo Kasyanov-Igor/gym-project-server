@@ -1,11 +1,11 @@
 ﻿using System;
-using gym_project_business_logic.Model.Domains;
 using System.Collections.Generic;
 using gym_project_business_logic.Model.Enum;
+using Model.Entities;
 
 namespace gym_project_business_logic.Model
 {
-	public class Coach
+    public class Coach
 	{
 		public int Id { get; set; }
 

@@ -1,11 +1,13 @@
-﻿using gym_project_business_logic.Model.Domains;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using gym_project_business_logic.Model;
 using gym_project_business_logic.Services.Interface;
 using Microsoft.EntityFrameworkCore;
+using Model.Entities;
 
 namespace gym_project_business_logic.Services
 {
-	public class WorkoutService : IWorkoutService
+    public class WorkoutService : IWorkoutService
 	{
 		private ADatabaseConnection _connection;
 		public WorkoutService(ADatabaseConnection databaseConnection)
@@ -29,5 +31,10 @@ namespace gym_project_business_logic.Services
 		{
 			return await this._connection.Workouts.FirstOrDefaultAsync(u => u.Title == name);
 		}
-	}
+
+        public async Task<IEnumerable<Workout>> GetWorkouts()
+        {
+            return await this._connection.Workouts.ToListAsync();
+        }
+    }
 }
