@@ -1,6 +1,7 @@
 ﻿using System;
+using gym_project_business_logic.Model;
 
-namespace gym_project_business_logic.Model.Domains
+namespace Model.Entities
 {
     public class Workout
     {

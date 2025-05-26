@@ -1,9 +1,9 @@
-﻿using gym_project_business_logic.Model.Domains;
+﻿using Model.Entities;
 using System.Collections.Generic;
 
 namespace gym_project_business_logic.Model
 {
-	public class Gym
+    public class Gym
 	{
 		public int Id { get; set; }
 
