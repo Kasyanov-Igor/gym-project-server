@@ -5,7 +5,9 @@ using Model.Entities;
 
 namespace gym_project.Controllers
 {
-	public class WorkoutController : ControllerBase
+    [ApiController]
+    [Route("[controller]")]
+    public class WorkoutController : ControllerBase
 	{
 		private IWorkoutService _service;
 		private ILogger<GymsController> _logger;
@@ -23,7 +25,7 @@ namespace gym_project.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateGym([FromForm] Workout createWorkout)
+        public async Task<ActionResult> CreateWorkout([FromForm] Workout createWorkout)
         {
             if (!ModelState.IsValid)
             {
