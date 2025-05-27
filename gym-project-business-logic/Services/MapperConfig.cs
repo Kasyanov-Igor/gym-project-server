@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using gym_project_business_logic.Model;
 using gym_project_business_logic.Model.Domains;
+using Model.Entities;
 
 namespace gym_project_business_logic.Services
 {
@@ -10,6 +11,7 @@ namespace gym_project_business_logic.Services
 		{
 			CreateMap<DTOCoach, Coach>();
             CreateMap<DTOLogin, Coach>();
+            CreateMap<DTOWorkout, Workout>();
             CreateMap<DTOClient, Client>()
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => "Client"));
         }

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using gym_project_business_logic.Model.Enum;
+using Model.Entities;
 
 namespace gym_project_business_logic.Model
 {
-	public class Coach
+    public class Coach
 	{
 		public int Id { get; set; }
 
@@ -20,6 +22,8 @@ namespace gym_project_business_logic.Model
 		public TrainerSpecializationEnum Specialization { get; set; }
 
 		public TrainerStatusEnum Status { get; set; }
+
+		public ICollection<Workout>? Workouts { get; set; }
 
 		public string Login { get; set; } = null!;
 
