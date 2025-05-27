@@ -14,7 +14,9 @@ namespace gym_project_business_logic.Services.Interface
 
 		public Task<bool> GetEmail(string emailAddress);
 
-		public Task DeleteClientAsync(string login, string password);
+        public Task<Client?> GetClientId(int id);
+
+        public Task DeleteClientAsync(string login, string password);
 
 		public Task UpdateClient(string login, string password, string? name = null, DateTime? dateOfBirth = null, string? contactPhoneNumber = null,
 						string? emailAddress = null, string? gender = null, string? status = null, string? salt = null);

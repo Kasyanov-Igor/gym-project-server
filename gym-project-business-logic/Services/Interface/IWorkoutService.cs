@@ -14,5 +14,7 @@ namespace gym_project_business_logic.Services.Interface
 
 		public Task<IEnumerable<Workout>> GetWorkouts();
 
+		public bool FindWorkout(Workout workout);
+
     }
 }

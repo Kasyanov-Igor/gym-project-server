@@ -97,5 +97,11 @@ namespace gym_project.Controllers
 			///Client userReadDto = this._mapper.CreateMapper().Map<Client>(user);
 			return Ok(user);
 		}
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Client>> GetClient(int id)
+        {
+            return await this._clientService.GetClientId(id);
+        }
     }
 }

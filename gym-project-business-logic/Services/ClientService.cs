@@ -101,6 +101,9 @@ namespace gym_project_business_logic.Services
 				await this._connection.SaveChangesAsync();
 			}
 		}
-
-	}
+        public async Task<Client?> GetClientId(int id)
+		{
+			return await this._connection.Clients.FirstOrDefaultAsync(u => u.Id == id);
+        }
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using gym_project_business_logic.Model;
 using gym_project_business_logic.Services.Interface;
@@ -17,11 +18,25 @@ namespace gym_project_business_logic.Services
 
 		public async Task AddWorkout(Workout workout)
 		{
-			await this._connection.Workouts.AddAsync(workout);
-			await this._connection.SaveChangesAsync();
+            if (!this.FindWorkout(workout))
+            {
+                await this._connection.Workouts.AddAsync(workout);
+                await this._connection.SaveChangesAsync();
+            }
 		}
 
-		public async Task DeleteWorkout(Workout workout)
+        public bool FindWorkout(Workout workout)
+        {
+            if (this._connection.Workouts.Any(usr =>
+            usr.BookingTime == workout.BookingTime))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task DeleteWorkout(Workout workout)
 		{
 			this._connection.Workouts.Remove(workout);
 			this._connection.SaveChanges();
