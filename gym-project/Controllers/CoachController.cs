@@ -4,6 +4,7 @@ using gym_project_business_logic.Model.Domains;
 using gym_project_business_logic.Services;
 using gym_project_business_logic.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Model.Entities;
 
 namespace gym_project.Controllers
 {
@@ -117,7 +118,12 @@ namespace gym_project.Controllers
         {
             return await this._coachService.GetCoachId(id);
         }
-    }
 
+        [HttpGet]
+        public async Task<IEnumerable<Coach>> GetCoaches()
+        {
+            return await this._coachService.GetCoaches();
+        }
+    }
 }
 
