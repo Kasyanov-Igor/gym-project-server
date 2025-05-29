@@ -10,6 +10,10 @@ namespace gym_project_business_logic.Model.Domains
 
         public int GymId { get; set; }
 
+        public int Places { get; set; }
+
+        public string? ClientName {  get; set; }
+
         public string? Description { get; set; } // Описание тренировки
 
         public int DurationMinutes { get; set; } // Предполагаемая продолжительность
