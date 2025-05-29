@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using gym_project_business_logic.Model;
 using gym_project_business_logic.Services.Interface;
@@ -74,5 +75,10 @@ namespace gym_project_business_logic.Services
 
 			return false;
 		}
-	}
+
+        public async Task<IEnumerable<Coach>> GetCoaches()
+		{
+            return await this._connection.Coachs.ToListAsync();
+        }
+    }
 }

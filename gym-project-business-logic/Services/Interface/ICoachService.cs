@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using gym_project_business_logic.Model;
+using Model.Entities;
 
 namespace gym_project_business_logic.Services.Interface
 {
@@ -16,6 +18,8 @@ namespace gym_project_business_logic.Services.Interface
 		public bool DeleteCoach(string LoginCoach, string password);
 
 		public Task<Coach?> GetCoachId(int id);
+
+        public Task<IEnumerable<Coach>> GetCoaches();
 
     }
 }
