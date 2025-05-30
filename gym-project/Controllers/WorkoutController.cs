@@ -29,6 +29,12 @@ namespace gym_project.Controllers
             return await this._service.GetWorkouts();
         }
 
+        [HttpGet("ByCoach/{id}")]
+        public async Task<IEnumerable<Workout>> GetWorkoutsByCoach(int id)
+        {
+            return await this._service.GetWorkoutsByCoach(id);
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateWorkout([FromForm] DTOWorkout createWorkout)
         {
