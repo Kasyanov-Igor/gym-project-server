@@ -65,5 +65,22 @@ namespace gym_project.Controllers
 
             return Ok(new { Message = $"Тренировка '{workout.Title}' успешно создана." });
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateClientName(int id, [FromBody] DTOWorkout createWorkout)
+        {
+            if (createWorkout == null)
+            {
+                return BadRequest("Модель обновления не может быть null");
+            }
+
+            var updated = await _service.UpdateClientNameAsync(id, createWorkout);
+            if (!updated)
+            {
+                return NotFound($"Тренировка с Id = {id} не найдена");
+            }
+
+            return NoContent();
+        }
     }
 }

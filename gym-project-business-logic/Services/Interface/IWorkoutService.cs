@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using gym_project_business_logic.Model.Domains;
 using Model.Entities;
 
 namespace gym_project_business_logic.Services.Interface
@@ -20,5 +21,6 @@ namespace gym_project_business_logic.Services.Interface
 
         public bool FindWorkout(Workout workout);
 
+        public Task<bool> UpdateClientNameAsync(int workoutId, DTOWorkout? newWorkout);
     }
 }
