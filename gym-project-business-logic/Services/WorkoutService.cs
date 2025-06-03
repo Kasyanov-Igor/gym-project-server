@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using gym_project_business_logic.Model;
+using gym_project_business_logic.Model.Domains;
 using gym_project_business_logic.Services.Interface;
 using Microsoft.EntityFrameworkCore;
 using Model.Entities;
@@ -59,11 +59,48 @@ namespace gym_project_business_logic.Services
 			return allWorkouts.Where(workout => workout.CoachId == id);
 		}
 
-        public async Task<IEnumerable<Workout>> GetWorkoutsByGym(int id)
-        {
-            var allWorkouts = await this._connection.Workouts.ToListAsync();
+		public async Task<IEnumerable<Workout>> GetWorkoutsByGym(int id)
+		{
+			var allWorkouts = await this._connection.Workouts.ToListAsync();
 
-            return allWorkouts.Where(workout => workout.GymId == id);
-        }
-    }
+			return allWorkouts.Where(workout => workout.GymId == id);
+		}
+
+		public async Task<bool> UpdateClientNameAsync(int workoutId, DTOWorkout? newWorkout)
+		{
+			var workout = await _connection.Workouts.FindAsync(workoutId);
+			if (workout == null)
+			{
+				return false; // не найден
+			}
+
+			if (newWorkout != null)
+			{
+				workout.Title = newWorkout.Title;
+				workout.NameCoach = newWorkout.NameCoach;
+				workout.GymId = newWorkout.GymId;
+				workout.Places = newWorkout.Places;
+				workout.ClientName = newWorkout.ClientName;
+				workout.Description = newWorkout.Description;
+				workout.DurationMinutes = newWorkout.DurationMinutes;
+				workout.BookingTime = newWorkout.BookingTime;
+				workout.CoachId = newWorkout.CoachId;
+
+				try
+				{
+					await _connection.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!_connection.Workouts.Any(w => w.Id == workoutId))
+					{
+						return false;
+					}
+					throw;
+				}
+			}
+
+			return true;
+		}
+	}
 }
