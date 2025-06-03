@@ -16,6 +16,8 @@ namespace gym_project_business_logic.Services.Interface
 
 		public Task<IEnumerable<Workout>> GetWorkoutsByCoach(int id);
 
+        public Task<IEnumerable<Workout>> GetWorkoutsByGym(int id);
+
         public bool FindWorkout(Workout workout);
 
     }

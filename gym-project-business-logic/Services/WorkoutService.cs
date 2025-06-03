@@ -58,5 +58,12 @@ namespace gym_project_business_logic.Services
 
 			return allWorkouts.Where(workout => workout.CoachId == id);
 		}
-	}
+
+        public async Task<IEnumerable<Workout>> GetWorkoutsByGym(int id)
+        {
+            var allWorkouts = await this._connection.Workouts.ToListAsync();
+
+            return allWorkouts.Where(workout => workout.GymId == id);
+        }
+    }
 }

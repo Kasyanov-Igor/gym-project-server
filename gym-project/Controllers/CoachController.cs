@@ -29,7 +29,7 @@ namespace gym_project.Controllers
 		}
 
 		[HttpPost("register")]
-		public async Task<IActionResult> RegisterController([FromForm] DTOCoach modelDTO)
+		public IActionResult RegisterController([FromForm] DTOCoach modelDTO)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -46,7 +46,7 @@ namespace gym_project.Controllers
 			coach.Password = hashedPassword;
 			coach.Salt = salt;
 
-			if (!await this._coachService.GetEmail(modelDTO.Email))
+			if (!this._coachService.GetEmail(modelDTO.Email).Result)
 			{
 				ModelState.AddModelError("Email Address", "Этот адрес электронной почты уже зарегистрирован.");
 				return BadRequest(ModelState);
@@ -54,7 +54,7 @@ namespace gym_project.Controllers
 
 			try
 			{
-				await this._coachService.AddCoach(coach);
+				this._coachService.AddCoach(coach);
 			}
 			catch (Exception ex)
 			{
