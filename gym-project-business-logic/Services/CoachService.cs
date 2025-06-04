@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using gym_project_business_logic.Model;
@@ -11,18 +13,28 @@ namespace gym_project_business_logic.Services
 	{
 		private ADatabaseConnection _connection;
 
-		public CoachService(ADatabaseConnection databaseConnection)
+        private static readonly object _lock = new object();
+
+        public CoachService(ADatabaseConnection databaseConnection)
 		{
 			this._connection = databaseConnection;
 		}
 
-		public async Task AddCoach(Coach coach)
+		public void AddCoach(Coach coach)
 		{
-			if (!this.FindCoach(coach))
-			{
-				await this._connection.Coachs.AddAsync(coach);
-				await this._connection.SaveChangesAsync();
-			}
+			lock (_lock)
+            {
+                if (!this.FindCoach(coach))
+                {
+                    this._connection.Coachs.Add(coach);
+                    this._connection.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Такой пользователь уже существует!");
+                }
+            }
+            
 		}
 
 		public async Task<bool> GetEmail(string emailAddress)

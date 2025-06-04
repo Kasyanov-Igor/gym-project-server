@@ -9,7 +9,7 @@ namespace gym_project_business_logic.Services.Interface
 	{
 		public Task<Coach?> GetCoach(string login, string password);
 
-		public Task AddCoach(Coach user);
+		public void AddCoach(Coach user);
 
 		public Task<bool> GetEmail(string emailAddress);
 
