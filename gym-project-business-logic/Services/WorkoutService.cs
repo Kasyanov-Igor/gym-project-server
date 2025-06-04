@@ -92,7 +92,7 @@ namespace gym_project_business_logic.Services
 				}
 				catch (DbUpdateConcurrencyException)
 				{
-					if (!_connection.Workouts.Any(w => w.Id == workoutId))
+					if (!this._connection.Workouts.Any(w => w.Id == workoutId))
 					{
 						return false;
 					}
@@ -102,5 +102,43 @@ namespace gym_project_business_logic.Services
 
 			return true;
 		}
+
+		public async Task<bool> AddClient(int workoutId, string? newClient)
+		{
+			var workout = await _connection.Workouts.FindAsync(workoutId);
+			if (workout == null)
+			{
+				return false; // не найден
+			}
+
+			if (newClient != null)
+			{
+				workout.ClientName = newClient;
+				//if (workout.Places > 0)
+				//{
+				//	workout.Places -= 1;
+				//}
+				//else
+				//{
+				//	return false;
+				//}
+
+				try
+				{
+					await _connection.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!this._connection.Workouts.Any(w => w.Id == workoutId))
+					{
+						return false;
+					}
+					throw;
+				}
+			}
+
+			return true;
+		}
+
 	}
 }

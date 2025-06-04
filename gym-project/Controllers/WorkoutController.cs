@@ -80,7 +80,24 @@ namespace gym_project.Controllers
                 return NotFound($"Тренировка с Id = {id} не найдена");
             }
 
-            return NoContent();
+            return Ok(new { Message = $"Запись клиента прошла успешно" });
+        }
+
+        [HttpPost("AddClinet/{id}")]
+        public async Task<IActionResult> AddClientName(int id, string clientName)
+        {
+            if (clientName == null)
+            {
+                return BadRequest("Модель обновления не может быть null");
+            }
+
+            var updated = await _service.AddClient(id, clientName);
+            if (!updated)
+            {
+                return NotFound($"Тренировка с Id = {id} не найдена");
+            }
+
+            return Ok(new { Message = $"Запись клиента прошла успешно" });
         }
     }
 }

@@ -22,5 +22,7 @@ namespace gym_project_business_logic.Services.Interface
         public bool FindWorkout(Workout workout);
 
         public Task<bool> UpdateClientNameAsync(int workoutId, DTOWorkout? newWorkout);
+
+        public Task<bool> AddClient(int workoutId, string? newClient);
     }
 }
