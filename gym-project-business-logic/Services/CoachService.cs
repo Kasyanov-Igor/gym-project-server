@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using gym_project_business_logic.Model;
+using gym_project_business_logic.Model.Domains;
 using gym_project_business_logic.Services.Interface;
 using Microsoft.EntityFrameworkCore;
+using Model.Entities;
 
 namespace gym_project_business_logic.Services
 {
@@ -79,6 +81,53 @@ namespace gym_project_business_logic.Services
         public async Task<IEnumerable<Coach>> GetCoaches()
 		{
             return await this._connection.Coachs.ToListAsync();
+        }
+
+        public async Task<bool> UpdateCoachAsync(int coachId, DTOCoach? newCoach)
+		{
+            var coach = await this._connection.Coachs.FindAsync(coachId);
+            if (coach == null)
+            {
+                return false; // не найден
+            }
+
+            if (coach != null)
+            {
+
+                coach.FullName = newCoach.FullName;
+                coach.DateOfBirth = newCoach.DateOfBirth;
+                coach.Email = newCoach.Email;
+                coach.PhoneNumber = newCoach.PhoneNumber;
+                coach.Gender = newCoach.Gender;
+                coach.Specialization = newCoach.Specialization;
+                coach.Status = newCoach.Status;
+                coach.WorkingTime = newCoach.WorkingTime;
+
+                try
+                {
+                    await _connection.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!this._connection.Coachs.Any(w => w.Id == coachId))
+                    {
+                        return false;
+                    }
+                    throw;
+                }
+            }
+
+            return true;
+        }
+
+        public async Task<bool> DeleteCoachAsync(int id)
+		{
+            var coach = await this._connection.Coachs.FindAsync(id);
+            if (coach == null) return false;
+
+            this._connection.Coachs.Remove(coach);
+            await this._connection.SaveChangesAsync();
+            return true;
         }
     }
 }

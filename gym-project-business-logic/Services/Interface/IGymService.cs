@@ -7,7 +7,8 @@ namespace gym_project_business_logic.Services.Interface
     public interface IGymService
     {
         public Task AddGym(Gym gym);
-
         public Task<IEnumerable<Gym>> GetGyms();
+        public Task<bool> DeleteGymAsync(int id);
+        public Task<IEnumerable<Gym>> GetGymByIdAsync(int id);
     }
 }
