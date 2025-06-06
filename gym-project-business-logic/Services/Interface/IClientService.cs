@@ -9,15 +9,9 @@ namespace gym_project_business_logic.Services.Interface
 	{
 		public bool FindClient(Client coach);
 
-		public Task AddClient(Client user);
-
-        public Task<bool> DeleteClientAsync(int id);
-
         public Task<Client?> GetClient(string login, string password);
 
 		public Task<bool> GetEmail(string emailAddress);
-
-        public Task<Client?> GetClientId(int id);
 
         public Task DeleteClientAsync(string login, string password);
 

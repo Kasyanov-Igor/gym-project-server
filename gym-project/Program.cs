@@ -1,3 +1,4 @@
+using gym_project_business_logic.Model;
 using gym_project_business_logic.Services;
 using gym_project_business_logic.Services.Interface;
 
@@ -14,7 +15,30 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ADatabaseConnection, SqliteConnection>();
 builder.Services.AddScoped<ICoachService, CoachService>();
 builder.Services.AddScoped<IClientService, ClientService>();
-builder.Services.AddScoped<IGymService, GymService>();
+
+builder.Services.AddScoped<Repository<Gym>>(); // –егистраци€ оригинального репозитори€
+builder.Services.AddScoped<Repository<Client>>(); // –егистраци€ оригинального репозитори€
+
+builder.Services.AddScoped<IRepository<Gym>>(option =>
+{
+    // –азрешение оригинального репозитори€
+    var repo = option.GetRequiredService<Repository<Gym>>();
+    var adb = option.GetRequiredService<ADatabaseConnection>(); // –азрешение ADatabaseConnection
+
+    // ¬озврат декоратора, оборачивающего оригинальный репозиторий
+    return new TransactionalRepositoryDecorator<Gym>(adb, repo);
+});
+
+builder.Services.AddScoped<IRepository<Client>>(option =>
+{
+    // –азрешение оригинального репозитори€
+    var repo = option.GetRequiredService<Repository<Client>>();
+    var adb = option.GetRequiredService<ADatabaseConnection>(); // –азрешение ADatabaseConnection
+
+    // ¬озврат декоратора, оборачивающего оригинальный репозиторий
+    return new TransactionalRepositoryDecorator<Client>(adb, repo);
+});
+
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 builder.Services.AddScoped<MapperConfig, MapperConfig>();

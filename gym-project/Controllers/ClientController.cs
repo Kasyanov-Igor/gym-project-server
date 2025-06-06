@@ -17,15 +17,17 @@ namespace gym_project.Controllers
 		private IClientService _clientService;
 		private IWebHostEnvironment _environment;
 		private ILogger<ClientController> _logger;
+		private IRepository<Client> _repository;
 
 		public ClientController(ILogger<ClientController> logger, MapperConfig mapper,
-			IWebHostEnvironment environment, IClientService clientService, ITokenService tokenService)
+			IWebHostEnvironment environment, IClientService clientService, ITokenService tokenService, IRepository<Client> repository)
 		{
 			this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			this._mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 			this._environment = environment ?? throw new ArgumentNullException(nameof(environment));
 			this._tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
 			this._clientService = clientService ?? throw new ArgumentNullException(nameof(clientService));
+			this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
 		}
 
 		[HttpPost("register")]
@@ -50,7 +52,7 @@ namespace gym_project.Controllers
 			user.Password = hashedPassword;
 			user.Salt = salt;
 
-			await this._clientService.AddClient(user);
+			await this._repository.Add(user);
 
 			return Ok(new { Message = "Пользователь успешно зарегистрирован." });
 		}
@@ -101,7 +103,7 @@ namespace gym_project.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Client?>> GetClient(int id)
         {
-            return await this._clientService.GetClientId(id);
+            return await this._repository.GetById(id);
         }
 
         [HttpPut("{id}")]
@@ -124,7 +126,7 @@ namespace gym_project.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClientAsync(int id)
         {
-            var deleted = await this._clientService.DeleteClientAsync(id);
+            var deleted = await this._repository.Delete(id);
             if (!deleted)
             {
                 return NotFound();

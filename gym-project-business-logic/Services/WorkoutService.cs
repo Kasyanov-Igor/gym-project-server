@@ -27,13 +27,9 @@ namespace gym_project_business_logic.Services
 
 		public bool FindWorkout(Workout workout)
 		{
-			if (this._connection.Workouts.Any(usr =>
-			usr.BookingTime == workout.BookingTime))
-			{
-				return true;
-			}
-
-			return false;
+			return this._connection.Workouts.Any(usr =>
+				usr.BookingTime == workout.BookingTime &&
+				usr.CoachId == workout.CoachId);
 		}
 
 		public async Task<bool> DeleteWorkoutAsync(int id)
@@ -109,7 +105,7 @@ namespace gym_project_business_logic.Services
 
 		public async Task<bool> AddClient(int workoutId, string? newClient)
 		{
-			var workout = await _connection.Workouts.FindAsync(workoutId);
+			var workout = await this._connection.Workouts.FindAsync(workoutId);
 			if (workout == null)
 			{
 				return false; // не найден
