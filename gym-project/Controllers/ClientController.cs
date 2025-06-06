@@ -99,9 +99,38 @@ namespace gym_project.Controllers
 		}
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Client>> GetClient(int id)
+        public async Task<ActionResult<Client?>> GetClient(int id)
         {
             return await this._clientService.GetClientId(id);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateClient(int id, [FromBody] DTOClient clientDto)
+        {
+            if (clientDto == null)
+            {
+                return BadRequest("Invalid client data.");
+            }
+
+            var updated = await this._clientService.UpdateClientAsync(id, clientDto);
+            if (!updated)
+            {
+                return NotFound();
+            }
+
+            return Ok(new { Message = $"Обновление прошло успешно!" });
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteClientAsync(int id)
+        {
+            var deleted = await this._clientService.DeleteClientAsync(id);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+
+            return Ok(new { Message = $"Удаление прошло успешно" });
         }
     }
 }

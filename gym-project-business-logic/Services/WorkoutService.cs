@@ -36,10 +36,14 @@ namespace gym_project_business_logic.Services
 			return false;
 		}
 
-		public async Task DeleteWorkout(Workout workout)
+		public async Task<bool> DeleteWorkoutAsync(int id)
 		{
-			this._connection.Workouts.Remove(workout);
-			this._connection.SaveChanges();
+			var work = await this._connection.Workouts.FindAsync(id);
+			if (work == null) return false;
+
+			this._connection.Workouts.Remove(work);
+			await this._connection.SaveChangesAsync();
+			return true;
 		}
 
 		public async Task<Workout?> GetWorkout(string name)

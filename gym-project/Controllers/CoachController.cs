@@ -113,16 +113,45 @@ namespace gym_project.Controllers
 			return Ok(user);
 		}
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Coach>> GetCoach(int id)
-        {
-            return await this._coachService.GetCoachId(id);
-        }
+		[HttpGet("{id}")]
+		public async Task<ActionResult<Coach?>> GetCoach(int id)
+		{
+			return await this._coachService.GetCoachId(id);
+		}
 
-        [HttpGet]
-        public async Task<IEnumerable<Coach>> GetCoaches()
+		[HttpGet]
+		public async Task<IEnumerable<Coach>> GetCoaches()
+		{
+			return await this._coachService.GetCoaches();
+		}
+
+		[HttpPut("{id}")]
+		public async Task<IActionResult> UpdateCoachAsync(int id, [FromBody] DTOCoach? newCoach)
+		{
+			if (newCoach == null)
+			{
+				return BadRequest("Модель обновления не может быть null");
+			}
+
+			var updated = await this._coachService.UpdateCoachAsync(id, newCoach);
+			if (!updated)
+			{
+				return NotFound($"Coach с Id = {id} не найден");
+			}
+
+			return Ok(new { Message = $"Обновление прошло успешно!" });
+		}
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCoachAsync(int id)
         {
-            return await this._coachService.GetCoaches();
+            var deleted = await this._coachService.DeleteCoachAsync(id);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+
+            return Ok(new { Message = $"Удаление прошло успешно" });
         }
     }
 }

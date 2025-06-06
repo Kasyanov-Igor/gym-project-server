@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using gym_project_business_logic.Model;
+using gym_project_business_logic.Model.Domains;
 using gym_project_business_logic.Services.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -101,9 +102,61 @@ namespace gym_project_business_logic.Services
 				await this._connection.SaveChangesAsync();
 			}
 		}
-        public async Task<Client?> GetClientId(int id)
+		public async Task<Client?> GetClientId(int id)
 		{
 			return await this._connection.Clients.FirstOrDefaultAsync(u => u.Id == id);
-        }
-    }
+		}
+
+		public async Task<bool> UpdateClientAsync(int clientId, DTOClient? newClient)
+		{
+			var client = await _connection.Clients.FindAsync(clientId);
+			if (client == null)
+			{
+				return false; // клиент не найден
+			}
+
+			if (newClient != null)
+			{
+				client.Name = newClient.Name;
+				client.DateOfBirth = newClient.DateOfBirth;
+				client.ContactPhoneNumber = newClient.ContactPhoneNumber;
+				client.EmailAddress = newClient.EmailAddress;
+				client.Gender = newClient.Gender;
+				client.Login = newClient.Login;
+
+				if (!string.IsNullOrEmpty(newClient.Password))
+				{
+					string salt = PasswordHelper.GenerateSalt();
+					string hashedPassword = PasswordHelper.HashPassword(newClient.Password, salt);
+
+					client.Salt = salt;
+					client.Password = hashedPassword;
+				}
+
+				try
+				{
+					await _connection.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!this._connection.Clients.Any(c => c.Id == clientId))
+					{
+						return false;
+					}
+					throw;
+				}
+			}
+
+			return true;
+		}
+		public async Task<bool> DeleteClientAsync(int id)
+		{
+			var clients = await this._connection.Clients.FindAsync(id);
+			if (clients == null) return false;
+
+			this._connection.Clients.Remove(clients);
+			await this._connection.SaveChangesAsync();
+			return true;
+		}
+	}
 }

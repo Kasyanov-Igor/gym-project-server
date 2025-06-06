@@ -9,7 +9,7 @@ namespace gym_project_business_logic.Services.Interface
 	{
 		public Task AddWorkout(Workout workout);
 
-		public Task DeleteWorkout(Workout workout);
+        public Task<bool> DeleteWorkoutAsync(int id);
 
 		public Task<Workout?> GetWorkout(string name);
 

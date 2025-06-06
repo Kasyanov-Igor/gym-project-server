@@ -58,7 +58,7 @@ namespace gym_project.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Произошла ошибка при создании.");
+                return StatusCode(500, $"Произошла ошибка при создании. {ex}");
             }
 
             this._logger.LogInformation($"(ID: {workout.Id}) успешно создан.");
@@ -98,6 +98,18 @@ namespace gym_project.Controllers
             }
 
             return Ok(new { Message = $"Запись клиента прошла успешно" });
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteWorkout(int id)
+        {
+            var deleted = await this._service.DeleteWorkoutAsync(id);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+
+            return Ok(new { Message = $"Удаление прошло успешно" });
         }
     }
 }

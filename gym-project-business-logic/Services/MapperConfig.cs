@@ -11,7 +11,9 @@ namespace gym_project_business_logic.Services
 		{
 			CreateMap<DTOCoach, Coach>();
             CreateMap<DTOLogin, Coach>();
+            CreateMap<DTOLogin, Admin>();
             CreateMap<DTOWorkout, Workout>();
+			CreateMap<AdminDto, Admin>();
             CreateMap<DTOClient, Client>()
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => "Client"));
         }

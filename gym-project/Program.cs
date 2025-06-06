@@ -15,6 +15,7 @@ builder.Services.AddScoped<ADatabaseConnection, SqliteConnection>();
 builder.Services.AddScoped<ICoachService, CoachService>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IGymService, GymService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 builder.Services.AddScoped<MapperConfig, MapperConfig>();
 builder.Services.AddScoped<ITokenService, TokenService>();
