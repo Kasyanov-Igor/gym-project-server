@@ -7,6 +7,8 @@ namespace gym_project_business_logic.Services
 	{
 		public const string _DATABASE_NAME = "./Gym-DB.db";
 
+		private static readonly object _saveLock = new object();
+
 		protected override string ReturnConnectionString()
 		{
 			return $"Data Source={_DATABASE_NAME}";

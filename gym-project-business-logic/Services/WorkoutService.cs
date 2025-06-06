@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using Model.Entities;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using gym_project_business_logic.Model.Domains;
 using gym_project_business_logic.Services.Interface;
-using Microsoft.EntityFrameworkCore;
-using Model.Entities;
 
 namespace gym_project_business_logic.Services
 {
@@ -14,46 +14,6 @@ namespace gym_project_business_logic.Services
 		public WorkoutService(ADatabaseConnection databaseConnection)
 		{
 			this._connection = databaseConnection;
-		}
-
-		public async Task AddWorkout(Workout workout)
-		{
-			if (!this.FindWorkout(workout))
-			{
-				await this._connection.Workouts.AddAsync(workout);
-				await this._connection.SaveChangesAsync();
-			}
-		}
-
-		public bool FindWorkout(Workout workout)
-		{
-			if (this._connection.Workouts.Any(usr =>
-			usr.BookingTime == workout.BookingTime))
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-		public async Task<bool> DeleteWorkoutAsync(int id)
-		{
-			var work = await this._connection.Workouts.FindAsync(id);
-			if (work == null) return false;
-
-			this._connection.Workouts.Remove(work);
-			await this._connection.SaveChangesAsync();
-			return true;
-		}
-
-		public async Task<Workout?> GetWorkout(string name)
-		{
-			return await this._connection.Workouts.FirstOrDefaultAsync(u => u.Title == name);
-		}
-
-		public async Task<IEnumerable<Workout>> GetWorkouts()
-		{
-			return await this._connection.Workouts.ToListAsync();
 		}
 
 		public async Task<IEnumerable<Workout>> GetWorkoutsByCoach(int id)
@@ -109,7 +69,7 @@ namespace gym_project_business_logic.Services
 
 		public async Task<bool> AddClient(int workoutId, string? newClient)
 		{
-			var workout = await _connection.Workouts.FindAsync(workoutId);
+			var workout = await this._connection.Workouts.FindAsync(workoutId);
 			if (workout == null)
 			{
 				return false; // не найден

@@ -1,5 +1,9 @@
+using gym_project_business_logic.Model;
 using gym_project_business_logic.Services;
 using gym_project_business_logic.Services.Interface;
+using Model.Entities;
+using Repositories;
+using Repositories.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,15 +15,70 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // –егистраци€ зависимостей
-builder.Services.AddScoped<ADatabaseConnection, SqliteConnection>();
-builder.Services.AddScoped<ICoachService, CoachService>();
-builder.Services.AddScoped<IClientService, ClientService>();
-builder.Services.AddScoped<IGymService, GymService>();
-builder.Services.AddScoped<IAdminService, AdminService>();
-builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 builder.Services.AddScoped<MapperConfig, MapperConfig>();
+builder.Services.AddScoped<ICoachService, CoachService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IWorkoutService, WorkoutService>();
+builder.Services.AddScoped<ADatabaseConnection, SqliteConnection>();
 
+// –егистраци€ оригинального репозитори€
+builder.Services.AddScoped<Repository<Gym>>();
+builder.Services.AddScoped<Repository<Admin>>();
+builder.Services.AddScoped<Repository<Client>>();
+builder.Services.AddScoped<Repository<Coach>>();
+builder.Services.AddScoped<Repository<Workout>>();
+
+builder.Services.AddScoped<IRepository<Workout>>(option =>
+{
+    // –азрешение оригинального репозитори€
+    var repo = option.GetRequiredService<Repository<Workout>>();
+    var adb = option.GetRequiredService<ADatabaseConnection>(); // –азрешение ADatabaseConnection
+
+    // ¬озврат декоратора, оборачивающего оригинальный репозиторий
+    return new TransactionalRepositoryDecorator<Workout>(adb, repo);
+});
+
+builder.Services.AddScoped<IRepository<Coach>>(option =>
+{
+    // –азрешение оригинального репозитори€
+    var repo = option.GetRequiredService<Repository<Coach>>();
+    var adb = option.GetRequiredService<ADatabaseConnection>(); // –азрешение ADatabaseConnection
+
+    // ¬озврат декоратора, оборачивающего оригинальный репозиторий
+    return new TransactionalRepositoryDecorator<Coach>(adb, repo);
+});
+
+builder.Services.AddScoped<IRepository<Gym>>(option =>
+{
+	// –азрешение оригинального репозитори€
+	var repo = option.GetRequiredService<Repository<Gym>>();
+	var adb = option.GetRequiredService<ADatabaseConnection>(); // –азрешение ADatabaseConnection
+
+	// ¬озврат декоратора, оборачивающего оригинальный репозиторий
+	return new TransactionalRepositoryDecorator<Gym>(adb, repo);
+});
+
+builder.Services.AddScoped<IRepository<Admin>>(option =>
+{
+	// –азрешение оригинального репозитори€
+	var repo = option.GetRequiredService<Repository<Admin>>();
+	var adb = option.GetRequiredService<ADatabaseConnection>(); // –азрешение ADatabaseConnection
+
+	// ¬озврат декоратора, оборачивающего оригинальный репозиторий
+	return new TransactionalRepositoryDecorator<Admin>(adb, repo);
+});
+
+builder.Services.AddScoped<IRepository<Client>>(option =>
+{
+	// –азрешение оригинального репозитори€
+	var repo = option.GetRequiredService<Repository<Client>>();
+	var adb = option.GetRequiredService<ADatabaseConnection>(); // –азрешение ADatabaseConnection
+
+	// ¬озврат декоратора, оборачивающего оригинальный репозиторий
+	return new TransactionalRepositoryDecorator<Client>(adb, repo);
+});
 
 var app = builder.Build();
 
