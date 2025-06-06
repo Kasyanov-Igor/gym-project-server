@@ -91,9 +91,8 @@ namespace gym_project_business_logic.Services
                 return false; // не найден
             }
 
-            if (coach != null)
+            if (coach != null && newCoach != null)
             {
-
                 coach.FullName = newCoach.FullName;
                 coach.DateOfBirth = newCoach.DateOfBirth;
                 coach.Email = newCoach.Email;

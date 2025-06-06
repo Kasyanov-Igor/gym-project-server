@@ -99,7 +99,7 @@ namespace gym_project.Controllers
 		}
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Client>> GetClient(int id)
+        public async Task<ActionResult<Client?>> GetClient(int id)
         {
             return await this._clientService.GetClientId(id);
         }

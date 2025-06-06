@@ -58,7 +58,7 @@ namespace gym_project.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Произошла ошибка при создании.");
+                return StatusCode(500, $"Произошла ошибка при создании. {ex}");
             }
 
             this._logger.LogInformation($"(ID: {workout.Id}) успешно создан.");

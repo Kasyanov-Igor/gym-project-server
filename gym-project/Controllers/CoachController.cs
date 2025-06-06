@@ -114,7 +114,7 @@ namespace gym_project.Controllers
 		}
 
 		[HttpGet("{id}")]
-		public async Task<ActionResult<Coach>> GetCoach(int id)
+		public async Task<ActionResult<Coach?>> GetCoach(int id)
 		{
 			return await this._coachService.GetCoachId(id);
 		}
