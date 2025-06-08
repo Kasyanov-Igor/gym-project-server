@@ -3,8 +3,6 @@ using gym_project_business_logic.Model.Domains;
 using gym_project_business_logic.Services;
 using gym_project_business_logic.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Repositories.Interface;
 using System.Security.Claims;
 
 namespace gym_project.Controllers

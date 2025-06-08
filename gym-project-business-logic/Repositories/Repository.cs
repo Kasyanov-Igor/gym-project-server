@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using gym_project_business_logic.Services.Interface;
 using Microsoft.EntityFrameworkCore;
-using Repositories.Interface;
+using gym_project_business_logic.Services.Interface;
 
 namespace Repositories
 {
