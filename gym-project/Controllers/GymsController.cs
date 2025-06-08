@@ -1,17 +1,17 @@
 ﻿using gym_project_business_logic.Model;
-using gym_project_business_logic.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Repositories.Interface;
 
 namespace gym_project.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("[controller]")]
 	public class GymsController : ControllerBase
 	{
-		private IGymService _service;
+		private IRepository<Gym> _service;
 		private ILogger<GymsController> _logger;
 
-		public GymsController(IGymService service, ILogger<GymsController> logger)
+		public GymsController(IRepository<Gym> service, ILogger<GymsController> logger)
 		{
 			this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			this._service = service ?? throw new ArgumentNullException(nameof(service));
@@ -20,13 +20,13 @@ namespace gym_project.Controllers
 		[HttpGet]
 		public async Task<IEnumerable<Gym>> GetGyms()
 		{
-			return await this._service.GetGyms();
+			return await this._service.Get();
 		}
 
 		[HttpGet("{id}")]
 		public async Task<ActionResult<Gym>> GetGym(int id)
 		{
-			var gym = await this._service.GetGymByIdAsync(id);
+			var gym = await this._service.GetById(id);
 			if (gym == null)
 			{
 				return NotFound();
@@ -45,7 +45,7 @@ namespace gym_project.Controllers
 
 			try
 			{
-				await this._service.AddGym(createGym);
+				await this._service.Add(createGym);
 			}
 			catch (Exception ex)
 			{
@@ -60,7 +60,7 @@ namespace gym_project.Controllers
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteAdmin(int id)
 		{
-			var deleted = await this._service.DeleteGymAsync(id);
+			var deleted = await this._service.Delete(id);
 			if (!deleted)
 			{
 				return NotFound();

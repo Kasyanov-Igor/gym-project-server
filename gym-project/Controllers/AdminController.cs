@@ -14,31 +14,32 @@ namespace gym_project.Controllers
 		private MapperConfig _mapper;
 		private ITokenService _tokenService;
 		private IAdminService _adminService;
+		private IRepository<Admin> _serviceRepository;
 		private IWebHostEnvironment _environment;
 		private ILogger<ClientController> _logger;
 
 		public AdminController(IAdminService adminService, ILogger<ClientController> logger, MapperConfig mapper,
-			IWebHostEnvironment environment, ITokenService tokenService)
+			IWebHostEnvironment environment, ITokenService tokenService, IRepository<Admin> service)
 		{
 			this._adminService = adminService ?? throw new ArgumentNullException(nameof(adminService));
 			this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			this._mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 			this._environment = environment ?? throw new ArgumentNullException(nameof(environment));
 			this._tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
+			this._serviceRepository = service ?? throw new ArgumentNullException(nameof(service));
 		}
 
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<AdminDto>>> GetAllAdmins()
 		{
-			var admins = await this._adminService.GetAllAdminsAsync();
+			var admins = await this._serviceRepository.Get();
 			return Ok(admins);
 		}
 
-		// GET: api/admin/{id}
 		[HttpGet("{id}")]
 		public async Task<ActionResult<AdminDto>> GetAdmin(int id)
 		{
-			var admin = await this._adminService.GetAdminByIdAsync(id);
+			var admin = await this._serviceRepository.GetById(id);
 			if (admin == null)
 			{
 				return NotFound();
@@ -68,7 +69,7 @@ namespace gym_project.Controllers
 			user.Password = hashedPassword;
 			user.Salt = salt;
 
-			await this._adminService.AddAdmin(user);
+			await this._serviceRepository.Add(user);
 
 			return Ok(new { Message = "Пользователь успешно зарегистрирован." });
 		}
@@ -134,11 +135,10 @@ namespace gym_project.Controllers
 			return Ok(new { Message = $"Обновление админа прошло успешно" });
 		}
 
-		// DELETE: api/admin/{id}
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteAdmin(int id)
 		{
-			var deleted = await _adminService.DeleteAdminAsync(id);
+			var deleted = await _serviceRepository.Delete(id);
 			if (!deleted)
 			{
 				return NotFound();

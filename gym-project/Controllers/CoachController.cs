@@ -4,7 +4,6 @@ using gym_project_business_logic.Model.Domains;
 using gym_project_business_logic.Services;
 using gym_project_business_logic.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Model.Entities;
 
 namespace gym_project.Controllers
 {
@@ -13,16 +12,18 @@ namespace gym_project.Controllers
 	public class CoachController : ControllerBase
 	{
 		private MapperConfig _config;
+        private IRepository<Coach> _serviceRepository;
 		private ICoachService _coachService;
 		private ITokenService _tokenService;
 		private ILogger<CoachController> _logger;
 		private IWebHostEnvironment _environment;
 
-		public CoachController(ICoachService coachService, MapperConfig mapper, ILogger<CoachController> logger, IWebHostEnvironment environment,
-					ITokenService tokenService)
+        public CoachController(ICoachService coachService, MapperConfig mapper, ILogger<CoachController> logger, IWebHostEnvironment environment,
+					ITokenService tokenService, IRepository<Coach> service)
 		{
 			this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			this._config = mapper ?? throw new ArgumentNullException(nameof(mapper));
+			this._serviceRepository = service ?? throw new ArgumentNullException(nameof(service));
 			this._environment = environment ?? throw new ArgumentNullException(nameof(environment));
 			this._tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
 			this._coachService = coachService ?? throw new ArgumentNullException(nameof(coachService));
@@ -54,7 +55,7 @@ namespace gym_project.Controllers
 
 			try
 			{
-				await this._coachService.AddCoach(coach);
+				await this._serviceRepository.Add(coach);
 			}
 			catch (Exception ex)
 			{
@@ -116,13 +117,13 @@ namespace gym_project.Controllers
 		[HttpGet("{id}")]
 		public async Task<ActionResult<Coach?>> GetCoach(int id)
 		{
-			return await this._coachService.GetCoachId(id);
+			return await this._serviceRepository.GetById(id);
 		}
 
 		[HttpGet]
 		public async Task<IEnumerable<Coach>> GetCoaches()
 		{
-			return await this._coachService.GetCoaches();
+			return await this._serviceRepository.Get();
 		}
 
 		[HttpPut("{id}")]
@@ -145,7 +146,7 @@ namespace gym_project.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCoachAsync(int id)
         {
-            var deleted = await this._coachService.DeleteCoachAsync(id);
+            var deleted = await this._serviceRepository.Delete(id);
             if (!deleted)
             {
                 return NotFound();
