@@ -1,8 +1,7 @@
-﻿using gym_project_business_logic.Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Repositories.Interface
+namespace gym_project_business_logic.Repositories.Interface
 {
     public interface IRepository<TEntity> where TEntity : class
     {

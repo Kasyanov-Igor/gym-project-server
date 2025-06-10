@@ -78,14 +78,14 @@ namespace gym_project_business_logic.Services
 			if (newClient != null)
 			{
 				workout.ClientName = newClient;
-				//if (workout.Places > 0)
-				//{
-				//	workout.Places -= 1;
-				//}
-				//else
-				//{
-				//	return false;
-				//}
+				if (workout.Places > 0)
+				{
+					workout.Places -= 1;
+				}
+				else
+				{
+					return false;
+				}
 
 				try
 				{

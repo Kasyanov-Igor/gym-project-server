@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using gym_project_business_logic.Services.Interface;
+using gym_project_business_logic.Repositories.Interface;
 
 namespace gym_project_business_logic.Services
 {

@@ -2,8 +2,9 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using gym_project_business_logic.Services.Interface;
+using gym_project_business_logic.Repositories.Interface;
 
-namespace Repositories
+namespace gym_project_business_logic.Repositories
 {
 	public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 	{

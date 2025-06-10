@@ -1,6 +1,6 @@
 ﻿using gym_project_business_logic.Model;
 using Microsoft.AspNetCore.Mvc;
-using Repositories.Interface;
+using gym_project_business_logic.Repositories.Interface;
 
 namespace gym_project.Controllers
 {

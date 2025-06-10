@@ -2,7 +2,8 @@ using gym_project_business_logic.Model;
 using gym_project_business_logic.Services;
 using gym_project_business_logic.Services.Interface;
 using Model.Entities;
-
+using gym_project_business_logic.Repositories;
+using gym_project_business_logic.Repositories.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 

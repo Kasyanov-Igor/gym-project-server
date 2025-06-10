@@ -1,5 +1,6 @@
 ﻿using gym_project_business_logic.Model;
 using gym_project_business_logic.Model.Domains;
+using gym_project_business_logic.Repositories.Interface;
 using gym_project_business_logic.Services;
 using gym_project_business_logic.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
