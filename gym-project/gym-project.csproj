@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\gym-project-business-logic\gym-project-business-logic.csproj" />
+    <ProjectReference Include="..\business-logic\gym-project-business-logic\gym-project-business-logic.csproj" />
   </ItemGroup>
 
 </Project>

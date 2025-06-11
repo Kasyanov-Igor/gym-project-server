@@ -1,0 +1,3 @@
+[submodule "business-logic/gym-project-business-logic"]
+	path = business-logic/gym-project-business-logic
+	url = https://github.com/Kasyanov-Igor/gym-project-business-logic.git
