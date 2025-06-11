@@ -13,13 +13,13 @@ namespace gym_project.Controllers
 	public class CoachController : ControllerBase
 	{
 		private MapperConfig _config;
-        private IRepository<Coach> _serviceRepository;
+		private IRepository<Coach> _serviceRepository;
 		private ICoachService _coachService;
 		private ITokenService _tokenService;
 		private ILogger<CoachController> _logger;
 		private IWebHostEnvironment _environment;
 
-        public CoachController(ICoachService coachService, MapperConfig mapper, ILogger<CoachController> logger, IWebHostEnvironment environment,
+		public CoachController(ICoachService coachService, MapperConfig mapper, ILogger<CoachController> logger, IWebHostEnvironment environment,
 					ITokenService tokenService, IRepository<Coach> service)
 		{
 			this._logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -38,9 +38,7 @@ namespace gym_project.Controllers
 				return BadRequest(ModelState);
 			}
 
-
 			Coach coach = this._config.CreateMapper().Map<Coach>(modelDTO);
-
 
 			string salt = PasswordHelper.GenerateSalt();
 			string hashedPassword = PasswordHelper.HashPassword(coach.Password, salt);
@@ -48,14 +46,20 @@ namespace gym_project.Controllers
 			coach.Password = hashedPassword;
 			coach.Salt = salt;
 
-			if (!await this._coachService.GetEmail(modelDTO.Email))
-			{
-				ModelState.AddModelError("Email Address", "Этот адрес электронной почты уже зарегистрирован.");
-				return BadRequest(ModelState);
-			}
+            if (!await this._coachService.GetEmail(modelDTO.Email))
+            {
+                ModelState.AddModelError(nameof(modelDTO.Email), "Этот адрес электронной почты уже зарегистрирован.");
+                return BadRequest(ModelState);
+            }
 
-			try
-			{
+            if (!this._coachService.IsValidPhoneNumber(modelDTO.PhoneNumber))
+            {
+                ModelState.AddModelError(nameof(modelDTO.PhoneNumber), "Неверный формат номера телефона.");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
 				await this._serviceRepository.Add(coach);
 			}
 			catch (Exception ex)
@@ -66,7 +70,6 @@ namespace gym_project.Controllers
 
 
 			return Ok(new { Message = "Пользователь успешно зарегистрирован." });
-
 		}
 
 		[HttpPost("login")]
@@ -144,17 +147,17 @@ namespace gym_project.Controllers
 			return Ok(new { Message = $"Обновление прошло успешно!" });
 		}
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCoachAsync(int id)
-        {
-            var deleted = await this._serviceRepository.Delete(id);
-            if (!deleted)
-            {
-                return NotFound();
-            }
+		[HttpDelete("{id}")]
+		public async Task<IActionResult> DeleteCoachAsync(int id)
+		{
+			var deleted = await this._serviceRepository.Delete(id);
+			if (!deleted)
+			{
+				return NotFound();
+			}
 
-            return Ok(new { Message = $"Удаление прошло успешно" });
-        }
-    }
+			return Ok(new { Message = $"Удаление прошло успешно" });
+		}
+	}
 }
 

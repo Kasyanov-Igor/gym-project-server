@@ -44,6 +44,12 @@ namespace gym_project.Controllers
 				return ValidationProblem();
 			}
 
+			if (!this._clientService.IsValidPhoneNumber(userDto.ContactPhoneNumber))
+			{
+				ModelState.AddModelError(nameof(userDto.ContactPhoneNumber), "Неверный формат номера телефона.");
+				return BadRequest(ModelState);
+			}
+
 			Client user = this._mapper.CreateMapper().Map<Client>(userDto);
 
 			string salt = PasswordHelper.GenerateSalt();
@@ -100,13 +106,13 @@ namespace gym_project.Controllers
 			return Ok(user);
 		}
 
-        [HttpGet]
-        public async Task<IEnumerable<Client>> GetClients()
-        {
-            return await this._repository.Get();
-        }
+		[HttpGet]
+		public async Task<IEnumerable<Client>> GetClients()
+		{
+			return await this._repository.Get();
+		}
 
-        [HttpGet("{id}")]
+		[HttpGet("{id}")]
 		public async Task<ActionResult<Client?>> GetClient(int id)
 		{
 			return await this._repository.GetById(id);
