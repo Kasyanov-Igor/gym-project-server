@@ -1,14 +1,16 @@
-using System.Security.Claims;
 using gym_project_business_logic.Model;
 using gym_project_business_logic.Model.Domains;
 using gym_project_business_logic.Repositories.Interface;
 using gym_project_business_logic.Services;
 using gym_project_business_logic.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace gym_project.Controllers
 {
-	[ApiController]
+    [Authorize]
+    [ApiController]
 	[Route("[controller]")]
 	public class CoachController : ControllerBase
 	{

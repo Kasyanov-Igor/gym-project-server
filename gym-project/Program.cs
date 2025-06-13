@@ -80,6 +80,7 @@ builder.Services.AddScoped<IRepository<Client>>(option =>
 	return new TransactionalRepositoryDecorator<Client>(adb, repo);
 });
 
+
 var app = builder.Build();
 
 app.UseCors(x => x
