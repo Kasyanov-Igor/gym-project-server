@@ -9,8 +9,8 @@ using System.Security.Claims;
 
 namespace gym_project.Controllers
 {
-    [Authorize(AuthenticationSchemes = "SomeOtherScheme")]
-    [ApiController]
+	[Authorize(AuthenticationSchemes = "SomeOtherScheme")]
+	[ApiController]
 	[Route("[controller]")]
 	public class CoachController : ControllerBase
 	{
@@ -32,8 +32,8 @@ namespace gym_project.Controllers
 			this._coachService = coachService ?? throw new ArgumentNullException(nameof(coachService));
 		}
 
-        [AllowAnonymous]
-        [HttpPost("register")]
+		[AllowAnonymous]
+		[HttpPost("register")]
 		public async Task<IActionResult> RegisterController([FromForm] DTOCoach modelDTO)
 		{
 			if (!ModelState.IsValid)
@@ -75,6 +75,7 @@ namespace gym_project.Controllers
 			return Ok(new { Message = "ѕользователь успешно зарегистрирован." });
 		}
 
+		[AllowAnonymous]
 		[HttpPost("login")]
 		public async Task<IActionResult> Login([FromForm] DTOLogin modelDTO)
 		{

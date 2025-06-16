@@ -66,7 +66,8 @@ namespace gym_project.Controllers
 			return Ok(new { Message = "Пользователь успешно зарегистрирован." });
 		}
 
-		[HttpPost("login")]
+        [AllowAnonymous]
+        [HttpPost("login")]
 		public async Task<IActionResult> Login([FromForm] DTOLogin userLoginDto)
 		{
 			if (!ModelState.IsValid)
