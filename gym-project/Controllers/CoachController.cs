@@ -9,8 +9,8 @@ using System.Security.Claims;
 
 namespace gym_project.Controllers
 {
-    [Authorize]
-    [ApiController]
+	[Authorize(AuthenticationSchemes = "SomeOtherScheme")]
+	[ApiController]
 	[Route("[controller]")]
 	public class CoachController : ControllerBase
 	{
@@ -32,6 +32,7 @@ namespace gym_project.Controllers
 			this._coachService = coachService ?? throw new ArgumentNullException(nameof(coachService));
 		}
 
+		[AllowAnonymous]
 		[HttpPost("register")]
 		public async Task<IActionResult> RegisterController([FromForm] DTOCoach modelDTO)
 		{
@@ -48,20 +49,20 @@ namespace gym_project.Controllers
 			coach.Password = hashedPassword;
 			coach.Salt = salt;
 
-            if (!await this._coachService.GetEmail(modelDTO.Email))
-            {
-                ModelState.AddModelError(nameof(modelDTO.Email), "Этот адрес электронной почты уже зарегистрирован.");
-                return BadRequest(ModelState);
-            }
+			if (!await this._coachService.GetEmail(modelDTO.Email))
+			{
+				ModelState.AddModelError(nameof(modelDTO.Email), "Этот адрес электронной почты уже зарегистрирован.");
+				return BadRequest(ModelState);
+			}
 
-            if (!this._coachService.IsValidPhoneNumber(modelDTO.PhoneNumber))
-            {
-                ModelState.AddModelError(nameof(modelDTO.PhoneNumber), "Неверный формат номера телефона.");
-                return BadRequest(ModelState);
-            }
+			if (!this._coachService.IsValidPhoneNumber(modelDTO.PhoneNumber))
+			{
+				ModelState.AddModelError(nameof(modelDTO.PhoneNumber), "Неверный формат номера телефона.");
+				return BadRequest(ModelState);
+			}
 
-            try
-            {
+			try
+			{
 				await this._serviceRepository.Add(coach);
 			}
 			catch (Exception ex)
@@ -74,6 +75,7 @@ namespace gym_project.Controllers
 			return Ok(new { Message = "Пользователь успешно зарегистрирован." });
 		}
 
+		[AllowAnonymous]
 		[HttpPost("login")]
 		public async Task<IActionResult> Login([FromForm] DTOLogin modelDTO)
 		{

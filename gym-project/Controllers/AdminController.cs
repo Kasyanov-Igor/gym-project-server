@@ -5,10 +5,12 @@ using gym_project_business_logic.Services;
 using gym_project_business_logic.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 using gym_project_business_logic.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 
 namespace gym_project.Controllers
 {
-	[Route("[controller]")]
+    [Authorize]
+    [Route("[controller]")]
 	[ApiController]
 	public class AdminController : ControllerBase
 	{
@@ -48,7 +50,8 @@ namespace gym_project.Controllers
 			return Ok(admin);
 		}
 
-		[HttpPost("register")]
+        [AllowAnonymous]
+        [HttpPost("register")]
 		public async Task<IActionResult> RegisterUser([FromForm] AdminDto userDto)
 		{
 			if (!ModelState.IsValid)
@@ -75,7 +78,8 @@ namespace gym_project.Controllers
 			return Ok(new { Message = "Пользователь успешно зарегистрирован." });
 		}
 
-		[HttpPost("login")]
+        [AllowAnonymous]
+        [HttpPost("login")]
 		public async Task<IActionResult> Login([FromForm] DTOLogin userLoginDto)
 		{
 			if (!ModelState.IsValid)
