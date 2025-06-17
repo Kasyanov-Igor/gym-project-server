@@ -8,10 +8,11 @@ namespace gym_project
 	public class Startup
 	{
         private readonly IConfiguration _configuration;
-
+        private string _secretKey;
         public Startup(IConfiguration configuration)
         {
             this._configuration = configuration;
+            this._secretKey = configuration["Jwt:Key"] ?? throw new ArgumentNullException("Jwt:Key", "JWT Secret Key is missing in configuration.");
         }
         public void ConfigureServices(IServiceCollection services)
 		{
@@ -21,11 +22,11 @@ namespace gym_project
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = "yourIssuer",
+                    ValidIssuer = "your-api-domain.com",
                     ValidateAudience = true,
-                    ValidAudience = "yourAudience",
+                    ValidAudience = "your-client-domain.com",
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("yourSecretKey")),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._secretKey)),
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };
