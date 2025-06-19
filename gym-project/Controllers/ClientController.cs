@@ -9,8 +9,8 @@ using System.Security.Claims;
 
 namespace gym_project.Controllers
 {
-    [Authorize]
-    [ApiController]
+	[Authorize]
+	[ApiController]
 	[Route("[controller]")]
 	public class ClientController : ControllerBase
 	{
@@ -32,8 +32,8 @@ namespace gym_project.Controllers
 			this._repository = repository ?? throw new ArgumentNullException(nameof(repository));
 		}
 
-        [AllowAnonymous]
-        [HttpPost("register")]
+		[AllowAnonymous]
+		[HttpPost("register")]
 		public async Task<IActionResult> RegisterUser([FromForm] DTOClient userDto)
 		{
 			if (!ModelState.IsValid)
@@ -66,8 +66,8 @@ namespace gym_project.Controllers
 			return Ok(new { Message = "Пользователь успешно зарегистрирован." });
 		}
 
-        [AllowAnonymous]
-        [HttpPost("login")]
+		[AllowAnonymous]
+		[HttpPost("login")]
 		public async Task<IActionResult> Login([FromForm] DTOLogin userLoginDto)
 		{
 			if (!ModelState.IsValid)
@@ -107,7 +107,7 @@ namespace gym_project.Controllers
 
 			Response.Cookies.Append("authToken", token, cookieOptions);
 			///Client userReadDto = this._mapper.CreateMapper().Map<Client>(user);
-			return Ok(user);
+			return Ok(token);
 		}
 
 		[HttpGet]
@@ -122,7 +122,22 @@ namespace gym_project.Controllers
 			return await this._repository.GetById(id);
 		}
 
-		[HttpPut("{id}")]
+        [HttpGet("current")]
+        public async Task<ActionResult<Client?>> GetCurrentClient()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var client = await this._repository.GetById(Convert.ToInt32(userId));
+
+            if (client == null)
+            {
+                return NotFound(); // Возвращаем 404, если клиент не найден
+            }
+
+            return client;
+        }
+
+        [HttpPut("{id}")]
 		public async Task<IActionResult> UpdateClient(int id, [FromBody] DTOClient clientDto)
 		{
 			if (clientDto == null)
