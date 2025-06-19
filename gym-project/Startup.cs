@@ -20,6 +20,17 @@ namespace gym_project
         }
         public void ConfigureServices(IServiceCollection services)
 		{
+            // Добавляем кэш для сессий
+            services.AddDistributedMemoryCache();
+
+            // Добавляем сессии с настройками
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // время жизни сессии
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true; // важно для GDPR
+            });
+
             services.AddAuthentication("SomeOtherScheme")
             .AddJwtBearer("SomeOtherScheme", options =>
             {
@@ -59,7 +70,9 @@ namespace gym_project
 
             app.UseAuthentication();
 
-			app.UseAuthorization();
+            app.UseSession(); // Включаем middleware сессии
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
 			{

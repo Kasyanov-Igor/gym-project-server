@@ -5,6 +5,7 @@ using gym_project_business_logic.Services;
 using gym_project_business_logic.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 
 namespace gym_project.Controllers
@@ -106,8 +107,9 @@ namespace gym_project.Controllers
 			var token = this._tokenService.GenerateToken(claims);
 
 			Response.Cookies.Append("authToken", token, cookieOptions);
-			///Client userReadDto = this._mapper.CreateMapper().Map<Client>(user);
-			return Ok(token);
+            Response.Headers.Append("Authorization", new AuthenticationHeaderValue("Bearer", token).ToString());
+
+            return Ok(token);
 		}
 
 		[HttpGet]
